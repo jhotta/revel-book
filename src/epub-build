@@ -1,0 +1,3 @@
+#! bin/sh
+
+rm -r revel-webFramewrok4Go-book-epub && rm revel-webFramewrok4Go-book.epub && review-epubmaker config.yml
