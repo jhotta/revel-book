@@ -11,7 +11,7 @@ booktitle: Revel Web Framework for Go
 # 著者
 aut: 堀田直孝
 prt: ダメダメ友の会
-prt_url:  http://github.com/takahashim/review-sample-book/
+prt_url:  https://github.com/jhotta/revel-book/
 edt: 堀田直孝
 date: 2014-02-14
 rights: |
