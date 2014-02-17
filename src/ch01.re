@@ -42,6 +42,9 @@ VirtualBoxは、以下の@<href>{https://www.virtualbox.org/wiki/Downloads, URL�
 
 == Go言語のインストール
 
+VirtualBox上に駆動しているubuntuの仮想マシンへsshを使ってアクセスします。
+
+
 最初の段落です。
 この行も同じ段落です。
 
