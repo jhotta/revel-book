@@ -7,10 +7,10 @@
 # ブック名(ファイル名になるもの。ASCII範囲の文字を使用)
 bookname: revel-webFramewrok4Go-book
 # 書名
-booktitle: Go言語による! Revel Web Framework 入門
+booktitle: Revel Web Framework 入門
 # 著者
 aut: 堀田直孝
-prt: Stay Young and Foolish Co.
+prt: Stay Hungry, Stay Foolish Co.
 prt_url:  https://github.com/jhotta/revel-book/
 edt: 堀田直孝
 date: 2014-05-03
