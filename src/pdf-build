@@ -1,3 +1,0 @@
-#! /bin/sh
-
-rm -r revel-webFramewrok4Go-book-pdf && rm revel-webFramewrok4Go-book.pdf && review-pdfmaker config.yml
