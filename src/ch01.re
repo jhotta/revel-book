@@ -17,10 +17,15 @@ GPL ver.2で公開されているFOSSなので、無料で使用することが�
 この本では、このソフトを利用し学習ベースとなるLinuxOSを起動することにします。
 VirtualBoxは、以下の@<href>{https://www.virtualbox.org/wiki/Downloads, URL}のページからダウンロードできます。目的のコンピューターのOSに適応したVirtualBoxのパッケージをダウンロードしインストールしていください。
 
-//indepimage[virtualbox_dl][VirtualBoxのダウンロードページ]
+//image[virtualbox_dl][VirtualBoxのダウンロードページ]{
+VirtualBoxのダウンロードページ
+//}
+
 
 
 === Vagrantによる環境設定
+
+@<img>{virtualbox_dl}ですね。
 
 ==== 仮想マシンイメージの準備 
 

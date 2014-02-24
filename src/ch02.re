@@ -6,7 +6,7 @@ Go言語とRevel web frameworkが、実行できる環境を構築していき�
 //}
 
 
-//indepimage[imgsample]
+//indepimage[imgsample][想い]
 
 
 == VirtualBoxとubuntuのインストール
