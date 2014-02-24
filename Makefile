@@ -1,5 +1,7 @@
 .PHONY: all
-all: main
+all:
+	make clean
+	make main
 
 .PHONY: main
 main:
