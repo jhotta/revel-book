@@ -1,5 +1,4 @@
-= 開発環境の準備
-
+= BrawserにRevelサイトの画面を表示するまで
 
 //lead{
 Go言語とRevel web frameworkが、実行できる環境を構築していきます。
@@ -7,6 +6,16 @@ Go言語とRevel web frameworkが、実行できる環境を構築していき�
 
 
 //indepimage[imgsample]
+
+
+== 開発環境の準備
+
+あsdfkjf；lかjdsf
+
+
+== それで〜
+
+
 
 
 == VirtualBoxとubuntuのインストール
