@@ -3,8 +3,9 @@ all: main
 
 .PHONY: main
 main:
-	make pdf
 	make epub
+	make pdf
+
 
 .PHONY: pdf
 pdf:
@@ -23,4 +24,3 @@ clean:
 	rm -rf src/revel-webFramewrok4Go-book-*
 	rm -f src/revel-webFramewrok4Go-book.*
 	rm -f revel-webFramewrok4Go-book.*
-	

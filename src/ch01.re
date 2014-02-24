@@ -7,6 +7,9 @@ Go言語とRevel web frameworkが、実行できる環境を構築していき�
 
 //indepimage[imgsample]
 
+== Goの実行環境を準備
+
+
 
 == 開発環境の準備
 
