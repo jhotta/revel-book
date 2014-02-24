@@ -5,8 +5,14 @@
 下記を参考にしてください。
 https://github.com/kmuto/review
 
-```shell
-$ cd src
-$ review-epubmaker config.yml
-$ review-pdfmaker config.yml
+### ソースコードのコンパイル
+
+```
+$ make
+```
+
+### コンパイル結果の削除
+
+```
+$ make clean
 ```
