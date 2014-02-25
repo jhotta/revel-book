@@ -1,37 +1,77 @@
 = BrawserにRevelサイトの画面を表示するまで
 
 //lead{
-Go言語とRevel web frameworkが、実行できる環境を構築していきます。
+Go言語を使ってRevel web frameworkが、起動できる環境を構築していきます。
 //}
 
 
 == ソフトウェアのインストールと仮想マシンイメージの設定
 
-=== VitualBoxの準備
+=== VitualBoxのインストール
 
-VirtualBoxは、x86仮想化ソフトウェア・パッケージの一つで、米国オラクル社によって開発がすすめられています。
-サポートされているホストOSはLinux、Mac OSX、Windows、Solarisです。
-ゲストOSとしては、FreeBSD、Linux、OpenBSD、OS/2 Warp、Windows、Mac OS X Server、Solarisなどx86/x64アーキテクチャのOSであれば基本的には起動できます。
-GPL ver.2で公開されているFOSSなので、無料で使用することが出来ます。
+この本では、VirtualBoxを利用してベースとなるLinuxOSを起動することにします。
+VirtualBoxは、以下の@<href>{https://www.virtualbox.org/wiki/Downloads, ページURL}からダウンロードできます。
 
-この本では、このソフトを利用し学習ベースとなるLinuxOSを起動することにします。
-VirtualBoxは、以下の@<href>{https://www.virtualbox.org/wiki/Downloads, URL}のページからダウンロードできます。目的のコンピューターのOSに適応したVirtualBoxのパッケージをダウンロードしインストールしていください。
+今作業しているPCのOSに適応したVirtualBoxのパッケージを、このサイトからダウンロードします。
 
-//image[virtualbox_dl][VirtualBoxのダウンロードページ]{
-VirtualBoxのダウンロードページ
+//image[vb_dl][VirtualBoxのダウンロードページ]{
 //}
 
+先にダウンロードしたVirtualBoxのインストールファイルをダブルクリックし、ポップアップメニューの指示に従ってVirtualBoxをインストルします。
+
+//image[vb_inst1][インストール図1]{
+//}
+
+ダウンロードしたファイルをダブルクリックし、ポップアップメニューの指示に従いVirtualBoxをインストルします。
+
+//image[vb_inst2][インストール図2]{
+//}
+
+ダウンロードしたファイルをダブルクリックし、ポップアップメニューの指示に従いVirtualBoxをインストルします。
+
+//image[vb_inst3][インストール図3]{
+//}
+
+ダウンロードしたファイルをダブルクリックし、ポップアップメニューの指示に従いVirtualBoxをインストルします。
 
 
 === Vagrantによる環境設定
 
-@<img>{virtualbox_dl}ですね。
+==== Vagrantのインストール
+
+VirtualBoxは直接操作しても特に問題はなのですが、仮想OS環境を効率よく操作すると共に基本環境の構築の再現性を上げるために、今回はVagrantを使用することにします。
+
+Vagrantは、以下の@<href>{http://www.vagrantup.com/downloads.html, ページURL}からダウンロードできます。
+
+今作業しているPCのOSに適応したVirtualBoxのパッケージを、このサイトからダウンロードします。
+
+//image[vg_dl][Vagrantのダウンロードページ]{
+//}
+
+先にダウンロードしたVirtualBoxのインストールファイルをダブルクリックし、ポップアップメニューの指示に従ってVirtualBoxをインストルします。
+
+//image[vg_inst1][インストール図1]{
+//}
+
+ダウンロードしたファイルをダブルクリックし、ポップアップメニューの指示に従いVagrantをインストルします。
+
+//image[vg_inst2][インストール図2]{
+//}
+
+ダウンロードしたファイルをダブルクリックし、ポップアップメニューの指示に従いVagrantをインストルします。
+
+//image[v_inst3][インストール図3]{
+//}
+
+ダウンロードしたファイルをダブルクリックし、ポップアップメニューの指示に従いVagrantをインストルします。
 
 ==== 仮想マシンイメージの準備 
 
+
 ==== vagrantfileの準備
 
-==== Go言語のインストール
+
+=== Go言語のインストール
 
 VirtualBox上に駆動しているubuntuの仮想マシンへsshを使ってアクセスします。
 
@@ -44,7 +84,7 @@ VirtualBox上に駆動しているubuntuの仮想マシンへsshを使ってア�
 ２行以上以上空いていても１行空いているのと同様に処理します。
 
 
-==== Revel web frameworkインストール
+=== Revel web frameworkインストール
 
 「=」「==」「===」の後に一文字空白をあけると見出しになります。
 
