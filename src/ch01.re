@@ -5,7 +5,7 @@ Go言語を使ってRevel web frameworkが、起動できる環境を構築し�
 //}
 
 
-== ソフトウェアのインストールと仮想マシンイメージの設定
+== 各種ソフトウェアのインストール
 
 === VitualBoxのインストール
 
@@ -35,9 +35,7 @@ VirtualBoxは、以下の@<href>{https://www.virtualbox.org/wiki/Downloads, ペ�
 ダウンロードしたファイルをダブルクリックし、ポップアップメニューの指示に従いVirtualBoxをインストルします。
 
 
-=== Vagrantによる環境設定
-
-==== Vagrantのインストール
+=== Vagrantのインストール
 
 VirtualBoxは直接操作しても特に問題はなのですが、仮想OS環境を効率よく操作すると共に基本環境の構築の再現性を上げるために、今回はVagrantを使用することにします。
 
@@ -80,7 +78,7 @@ Vagrant 1.4.3
 //}
 
 
-==== 仮想マシンイメージの準備 
+=== 仮想マシンイメージの準備 
 
 http://www.vagrantbox.es/
 
@@ -106,10 +104,6 @@ saucy-server-cloudimg-amd64-vagrant-disk1.box
 上記のコマンドを実行すると、下記の内容がターミナルウインドーに表示され、仮想OS用のイメージの登録が終了します。
 
 //cmd{
-WARN: Unresolved specs during Gem::Specification.reset:
-      ffi (>= 1.0.11, ~> 1.0)
-WARN: Clearing out unresolved specs.
-Please report a bug if this causes problems.
 Downloading box from URL: http://cloud-images.ubuntu.com/vagrant/saucy/current/saucy-server-cloudimg-amd64-vagrant-disk1.box
 Extracting box...te: 1131k/s, Estimated time remaining: --:--:--)
 Successfully added box 'ubuntu' with provider 'virtualbox'!
@@ -135,7 +129,7 @@ $ cd ~/vagrant-env
 $ vagrant init {title}
 //}
 
-titleの部分には、先ほど指定した仮想OSイメージ名を指定しコマンドを実行します。
+{title}の部分には、先ほど指定した仮想OSイメージ名を指定しコマンドを実行します。
 
 //cmd{
 $ vagrant init ubuntu
@@ -144,10 +138,6 @@ $ vagrant init ubuntu
 下記のような実行か結果が表示されている確認してください。
 
 //cmd{
-WARN: Unresolved specs during Gem::Specification.reset:
-      ffi (>= 1.0.11, ~> 1.0)
-WARN: Clearing out unresolved specs.
-Please report a bug if this causes problems.
 A `Vagrantfile` has been placed in this directory. You are now
 ready to `vagrant up` your first virtual environment! Please read
 the comments in the Vagrantfile as well as documentation on
@@ -163,10 +153,6 @@ $ vagrant up
 画面は、流れるように進んでいきます。最終的には以下のような内容の画面が表示されていることを確認してください。
 
 //cmd{
-WARN: Unresolved specs during Gem::Specification.reset:
-      ffi (>= 1.0.11, ~> 1.0)
-WARN: Clearing out unresolved specs.
-Please report a bug if this causes problems.
 Bringing machine 'default' up with 'virtualbox' provider...
 [default] Importing base box 'ubuntu'...
 [default] Matching MAC address for NAT networking...
@@ -201,9 +187,6 @@ $ vagrant ssh
 以下のコマンドが、表示されているでしょうか？
 
 //cmd{
-WARN: Unresolved specs during Gem::Specification.reset:
-      ffi (>= 1.0.11, ~> 1.0)
-WARN: Clearing out unresolved specs.
 Please report a bug if this causes problems.
 Welcome to Ubuntu 13.10 (GNU/Linux 3.11.0-17-generic x86_64)
 
@@ -231,27 +214,57 @@ vagrant@vagrant-ubuntu-saucy-64:~$
 ここまでで、Vagarantによってコントロールできる仮想環境ができました。
 
 
-==== Vagrantfileの準備
+====[column] 
+
+コマンドプロンプトの直前に下記のようなWARNINGが表示された場合:
+
+//cmd{
+_____________________________________________________________________
+WARNING! Your environment specifies an invalid locale.
+ This can affect your user experience significantly, including the
+ ability to manage packages. You may install the locales by running:
+
+   sudo apt-get install language-pack-UTF-8
+     or
+   sudo locale-gen UTF-8
+
+To see all available language packs, run:
+   apt-cache search "^language-pack-[a-z][a-z]$"
+To disable this message for all users, run:
+   sudo touch /var/lib/cloud/instance/locale-check.skip
+_____________________________________________________________________
+//}
 
 
-=== Go言語のインストール
+Mac側でTerminalの設定の確認:
+
+//image[mac_ssh][OSX terminalの設定]{
+Settings > Advanced > Set locale environment variables on startup にチェックマークがある。
+//}
+
+概要:
+
+Mac側でTerminalのlocaleにLC_CTYPE=UTF-8が設定がされ、Ubuntuが解釈できないので以下のような警告が場合があります。
+
+解決策:
+
+"Set locale environment variables on startup"の前にあるチェエクマークを外してください。
+
+
+== 仮想マシンイメージの設定
+
+=== Vagrantfileの準備
+
+あsdふぁdsふぁsdふぁsdふぁ
+
+==== OSの設定変更
+
+あsdふぁsdふぁsdふぁsdf
+
+==== Go言語のインストール
 
 VirtualBox上に駆動しているubuntuの仮想マシンへsshを使ってアクセスします。
 
-
-最初の段落です。
-この行も同じ段落です。
-
-次の段落です。
-
-２行以上以上空いていても１行空いているのと同様に処理します。
-
-
-=== Revel web frameworkインストール
+==== Revel web frameworkインストール
 
 「=」「==」「===」の後に一文字空白をあけると見出しになります。
-
-
-====[column] コラムについて
-
-見出しの先頭に「[column]」と書くと、そこはコラムになります。
