@@ -65,6 +65,9 @@ Vagrantは、以下の@<href>{http://www.vagrantup.com/downloads.html, ページ
 
 ダウンロードしたファイルをダブルクリックし、ポップアップメニューの指示に従いVagrantをインストルします。
 
+インストールが完了したところで、Vagrantの操作をするするためにコンソールを起動します。OSXであれば、terminalを実行し、コマンドを入力することになります。
+
+
 
 //cmd{
 $ vagrant --version
@@ -100,7 +103,7 @@ http://cloud-images.ubuntu.com/vagrant/saucy/current/\
 saucy-server-cloudimg-amd64-vagrant-disk1.box
 //}
 
-上記のコマンドを実行すると、下記の内容がターミナルウインドーに表示され、登録が終了します。
+上記のコマンドを実行すると、下記の内容がターミナルウインドーに表示され、仮想OS用のイメージの登録が終了します。
 
 //cmd{
 WARN: Unresolved specs during Gem::Specification.reset:
@@ -112,56 +115,120 @@ Extracting box...te: 1131k/s, Estimated time remaining: --:--:--)
 Successfully added box 'ubuntu' with provider 'virtualbox'!
 //}
 
-ここに解説を書く!
+万が一、仮想OSのイメージ登録に失敗した場合やイメージが不要になった場合は、以下のlistコマンドで確認の上、削除できます。
 
 //cmd{
+$ vagrant box list
 $ vagrant box revmove {title}
 //}
 
-ここに解説を書く!
+それでは、vagrantに必要なファイルを置いておくディレクトリーを作ることにします。	
 
 //cmd{
 $ mkdir ~/vagrant-env
 $ cd ~/vagrant-env
 //}
 
-ここに解説を書く!
+下記のフィーマットのコマンドを使ってVagarantfileを生成します。
 
 //cmd{
 $ vagrant init {title}
 //}
 
-ここに解説を書く!
+titleの部分には、先ほど指定した仮想OSイメージ名を指定しコマンドを実行します。
 
 //cmd{
-$ vagrant init vagrant-env
+$ vagrant init ubuntu
 //}
 
-ここに解説を書く!
+下記のような実行か結果が表示されている確認してください。
+
+//cmd{
+WARN: Unresolved specs during Gem::Specification.reset:
+      ffi (>= 1.0.11, ~> 1.0)
+WARN: Clearing out unresolved specs.
+Please report a bug if this causes problems.
+A `Vagrantfile` has been placed in this directory. You are now
+ready to `vagrant up` your first virtual environment! Please read
+the comments in the Vagrantfile as well as documentation on
+`vagrantup.com` for more information on using Vagrant.
+//}
+
+それでは、ここで仮想OSを起動してみます。
 
 //cmd{
 $ vagrant up
 //}
 
-ここに解説を書く!
+画面は、流れるように進んでいきます。最終的には以下のような内容の画面が表示されていることを確認してください。
 
 //cmd{
-こんな内容のが表示される。
+WARN: Unresolved specs during Gem::Specification.reset:
+      ffi (>= 1.0.11, ~> 1.0)
+WARN: Clearing out unresolved specs.
+Please report a bug if this causes problems.
+Bringing machine 'default' up with 'virtualbox' provider...
+[default] Importing base box 'ubuntu'...
+[default] Matching MAC address for NAT networking...
+[default] Setting the name of the VM...
+[default] Clearing any previously set forwarded ports...
+[default] Clearing any previously set network interfaces...
+[default] Preparing network interfaces based on configuration...
+[default] Forwarding ports...
+[default] -- 22 => 2222 (adapter 1)
+[default] Booting VM...
+[default] Waiting for machine to boot. This may take a few minutes...
+[default] Machine booted and ready!
+[default] The guest additions on this VM do not match the installed version of
+VirtualBox! In most cases this is fine, but in rare cases it can
+prevent things such as shared folders from working properly. If you see
+shared folder errors, please make sure the guest additions within the
+virtual machine match the version of VirtualBox you have installed on
+your host and reload your VM.
+
+Guest Additions Version: 4.2.16
+VirtualBox Version: 4.3
+[default] Mounting shared folders...
+[default] -- /vagrant
 //}
 
-ここに解説を書く!
+仮想OSが起動している夜なら、sshで仮想環境にアクセスすることにします。
 
 //cmd{
 $ vagrant ssh
 //}
 
-ここに解説を書く!
+以下のコマンドが、表示されているでしょうか？
 
 //cmd{
-sshの接続結果を表示
+WARN: Unresolved specs during Gem::Specification.reset:
+      ffi (>= 1.0.11, ~> 1.0)
+WARN: Clearing out unresolved specs.
+Please report a bug if this causes problems.
+Welcome to Ubuntu 13.10 (GNU/Linux 3.11.0-17-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com/
+
+  System information as of Wed Feb 26 04:07:30 UTC 2014
+
+  System load:  0.98              Processes:           86
+  Usage of /:   2.6% of 39.34GB   Users logged in:     0
+  Memory usage: 28%               IP address for eth0: 10.0.2.15
+  Swap usage:   0%
+
+  Graph this data and manage this system at:
+    https://landscape.canonical.com/
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+0 packages can be updated.
+0 updates are security updates.
+
+vagrant@vagrant-ubuntu-saucy-64:~$
 //}
 
-ここに解説を書く!
+ここまでで、Vagarantによってコントロールできる仮想環境ができました。
 
 
 ==== Vagrantfileの準備
