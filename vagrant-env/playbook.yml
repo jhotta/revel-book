@@ -7,7 +7,11 @@
     - name: "update hosts"
       copy: src=files/hosts dest=/etc/hosts owner=root group=root mode=644 backup=yes
       sudo: yes
-      
+
+    - name: "apt-get install golang"
+      apt: pkg=golang update_cache=yes cache_valid_time=3600
+      sudo: yes
+
     - name: "apt-get install git"
       apt: pkg=git update_cache=yes cache_valid_time=3600
       sudo: yes
@@ -31,14 +35,11 @@
     - name: "update bashrc"
       copy: src=files/.bashrc dest=/home/vagrant/.bashrc owner=vagrant group=vagrant mode=644 backup=yes
 
-    - name: "export GOPATH=/home/vagrant/gocode"
-      command: export GOPATH=/home/vagrant/gocode
-
-    - name: "gocode/README.md"
-      copy: src=files/README.md dest=/home/vagrant/gocode/README.md owner=vagrant group=vagrant mode=644 
+    - name: "mkdir gocode"
+      file: dest=/home/vagrant/gocode state=directory
 
     - name: "go get github.com/robfig/revel"
-      shell: cd /home/vagrant/gocode && go get github.com/robfig/revel
+      shell: export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode && go get github.com/robfig/revel
 
     - name: "go get github.com/robfig/revel/revel"
-      shell: cd /home/vagrant/gocode && go get github.com/robfig/revel/revel
+      shell: export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode && go get github.com/robfig/revel/revel
