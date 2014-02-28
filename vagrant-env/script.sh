@@ -2,7 +2,7 @@
 
 sudo apt-get update
 sudo apt-get -y install golang git mercurial sqlite language-pack-en-base language-pack-ja-base
-sudo dpkg-reconfigure locales
+# sudo dpkg-reconfigure locales
 
 mkdir /home/vagrant/gocode
 
