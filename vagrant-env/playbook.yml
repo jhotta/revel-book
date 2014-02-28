@@ -3,18 +3,42 @@
 
   user: vagrant
   tasks:
-    - name: "apt-get install golang"
-      apt: pkg=golang
-      sudo: yes
 
+    - name: "update hosts"
+      copy: src=files/hosts dest=/etc/hosts owner=root group=root mode=644 backup=yes
+      sudo: yes
+      
     - name: "apt-get install git"
-      apt: pkg=git
+      apt: pkg=git update_cache=yes cache_valid_time=3600
       sudo: yes
 
     - name: "apt-get install mercurial"
-      apt: pkg=mercurial
+      apt: pkg=mercurial update_cache=yes cache_valid_time=3600
       sudo: yes
 
     - name: "apt-get install sqlite"
-      apt: pkg=sqlite
+      apt: pkg=sqlite update_cache=yes cache_valid_time=3600
       sudo: yes
+
+    - name: "apt-get install language-pack-en-base"
+      apt: pkg=language-pack-en-base
+      sudo: yes
+
+    - name: "apt-get install language-pack-ja-base"
+      apt: pkg=language-pack-ja-base update_cache=yes cache_valid_time=3600
+      sudo: yes
+
+    - name: "update bashrc"
+      copy: src=files/.bashrc dest=/home/vagrant/.bashrc owner=vagrant group=vagrant mode=644 backup=yes
+
+    - name: "export GOPATH=/home/vagrant/gocode"
+      command: export GOPATH=/home/vagrant/gocode
+
+    - name: "gocode/README.md"
+      copy: src=files/README.md dest=/home/vagrant/gocode/README.md owner=vagrant group=vagrant mode=644 
+
+    - name: "go get github.com/robfig/revel"
+      shell: cd /home/vagrant/gocode && go get github.com/robfig/revel
+
+    - name: "go get github.com/robfig/revel/revel"
+      shell: cd /home/vagrant/gocode && go get github.com/robfig/revel/revel
