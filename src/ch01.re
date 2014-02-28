@@ -250,22 +250,62 @@ Mac側でTerminalのlocaleにLC_CTYPE=UTF-8が設定がされ、Ubuntuが解釈�
 
 "Set locale environment variables on startup"の前にあるチェエクマークを外してください。
 
+=== ansibleのインストール
+
+OSXにHomebrewが事前にインストールされていることを前提にansibleのインストールを進めていきます。
+
+//cmd{
+$ brew install ansible
+//}
+
+下記のようなインンストールが進行しビールジョッキの行が表示されれば、インストールは順調に完了したと推測できます。
+
+
+//cmd{
+==> Downloading https://github.com/ansible/ansible/archive/v1.4.5.tar.gz
+Already downloaded: /Library/Caches/Homebrew/ansible-1.4.5.tar.gz
+==> Downloading https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.
+Already downloaded: /Library/Caches/Homebrew/ansible--pycrypto-2.6.tar.gz
+==> python setup.py install --prefix=/usr/local/Cellar/ansible/1.4.5/libexec
+==> Downloading https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.tar
+Already downloaded: /Library/Caches/Homebrew/ansible--pyyaml-3.10.tar.gz
+==> python setup.py install --prefix=/usr/local/Cellar/ansible/1.4.5/libexec
+==> Downloading https://pypi.python.org/packages/source/p/paramiko/paramiko-1.11
+Already downloaded: /Library/Caches/Homebrew/ansible--paramiko-1.11.0.tar.gz
+==> python setup.py install --prefix=/usr/local/Cellar/ansible/1.4.5/libexec
+==> Downloading https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-
+Already downloaded: /Library/Caches/Homebrew/ansible--markupsafe-0.18.tar.gz
+==> python setup.py install --prefix=/usr/local/Cellar/ansible/1.4.5/libexec
+==> Downloading https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.1.ta
+Already downloaded: /Library/Caches/Homebrew/ansible--jinja2-2.7.1.tar.gz
+==> python setup.py install --prefix=/usr/local/Cellar/ansible/1.4.5/libexec
+==> python setup.py install --prefix=/usr/local/Cellar/ansible/1.4.5
+==> Caveats
+Set PYTHONPATH if you need Python to find the installed site-packages:
+  export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
+==> Summary
+🍺  /usr/local/Cellar/ansible/1.4.5: 763 files, 8.8M, built in 13 seconds
+//}
+
+ここで、ansibleの動作確認をしてみます。
+
+//cmd{
+$ ansible --version
+//}
+
+以下のようにバージョンが表示されれば、インストールは成功しています。
+
+//cmd{
+ansible 1.4.5
+//}
+
 
 == 仮想マシンイメージの設定
 
 === Vagrantfileの準備
 
-あsdふぁdsふぁsdふぁsdふぁ
 
-====[column] 
 
-vargrant provisionの際にsshアクセスができなくなる対策:
-
-//cmd{
-$ vi ~/ssh/know_hosts 
-//}
-
-fileの中身の表示の中から、"[127.0.0.1]:2222"と記されているブロック(数行)を削除する。
 
 ==== OSの設定変更
 
@@ -280,26 +320,14 @@ VirtualBox上に駆動しているubuntuの仮想マシンへsshを使ってア�
 「=」「==」「===」の後に一文字空白をあけると見出しになります。
 
 
+====[column] 
 
+vargrant provisionの際にsshアクセスができなくなる対策:
 
+//cmd{
+$ vi ~/ssh/know_hosts 
+//}
 
+fileの中身の表示の中から、"[127.0.0.1]:2222"と記されているブロック(数行)を削除する。
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-vagrant plugin install vagrant-ansible
-
-Installing the 'vagrant-ansible' plugin. This can take a few minutes...
-Installed the plugin 'vagrant-ansible (0.0.5)'!
 
