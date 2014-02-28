@@ -278,3 +278,28 @@ VirtualBox上に駆動しているubuntuの仮想マシンへsshを使ってア�
 ==== Revel web frameworkインストール
 
 「=」「==」「===」の後に一文字空白をあけると見出しになります。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+vagrant plugin install vagrant-ansible
+
+Installing the 'vagrant-ansible' plugin. This can take a few minutes...
+Installed the plugin 'vagrant-ansible (0.0.5)'!
+

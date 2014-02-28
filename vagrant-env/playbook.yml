@@ -14,3 +14,7 @@
     - name: "apt-get install mercurial"
       apt: pkg=mercurial
       sudo: yes
+
+    - name: "apt-get install sqlite"
+      apt: pkg=sqlite
+      sudo: yes
