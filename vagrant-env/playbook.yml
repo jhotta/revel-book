@@ -36,10 +36,11 @@
       copy: src=files/.bashrc dest=/home/vagrant/.bashrc owner=vagrant group=vagrant mode=644 backup=yes
 
     - name: "mkdir gocode"
-      file: dest=/home/vagrant/gocode state=directory
+      command: mkdir /home/vagrant/gocode creates=/home/vagrant/gocode
 
     - name: "go get github.com/robfig/revel"
-      shell: export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode && go get github.com/robfig/revel
+      shell: export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode && go get github.com/robfig/revel creates=/home/vagrant/gocode/src/github.com/robfig/revel
 
     - name: "go get github.com/robfig/revel/revel"
-      shell: export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode && go get github.com/robfig/revel/revel
+      shell: export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode && go get github.com/robfig/revel/revel creates=/home/vagrant/gocode/bin/revel
+
