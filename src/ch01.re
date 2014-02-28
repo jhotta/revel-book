@@ -257,6 +257,16 @@ Mac側でTerminalのlocaleにLC_CTYPE=UTF-8が設定がされ、Ubuntuが解釈�
 
 あsdふぁdsふぁsdふぁsdふぁ
 
+====[column] 
+
+vargrant provisionの際にsshアクセスができなくなる対策:
+
+//cmd{
+$ vi ~/ssh/know_hosts 
+//}
+
+fileの中身の表示の中から、"[127.0.0.1]:2222"と記されているブロック(数行)を削除する。
+
 ==== OSの設定変更
 
 あsdふぁsdふぁsdふぁsdf

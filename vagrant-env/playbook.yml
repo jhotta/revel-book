@@ -1,0 +1,16 @@
+---
+- hosts: all
+
+  user: vagrant
+  tasks:
+    - name: "apt-get install golang"
+      apt: pkg=golang
+      sudo: yes
+
+    - name: "apt-get install git"
+      apt: pkg=git
+      sudo: yes
+
+    - name: "apt-get install mercurial"
+      apt: pkg=mercurial
+      sudo: yes

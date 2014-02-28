@@ -1,2 +1,3 @@
 bin
 vagrant-env/.vagrant
+vagrant-env/vagrant_ansible_inventory_default
