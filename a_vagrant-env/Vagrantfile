@@ -11,7 +11,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "playbook.yml"
   end
- 
-#  config.vm.provision "shell", path: "script.sh"
 
 end
