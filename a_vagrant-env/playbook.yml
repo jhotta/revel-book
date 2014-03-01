@@ -54,3 +54,5 @@
     - name: "git clone https://github.com/jhotta/revelFramework4Go.git"
       git: repo=https://github.com/jhotta/revelFramework4Go.git dest=/home/vagrant/gocode/src/revelFramework4Go
 
+    - name: "revel run revelFramework4Go/sampleBlogSite"
+      command: revel run revelFramework4Go/sampleBlogSite dest=/home/vagrant/gocode/src/revelFramework4Go
