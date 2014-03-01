@@ -24,6 +24,10 @@
       apt: pkg=sqlite update_cache=yes cache_valid_time=3600
       sudo: yes
 
+    - name: "apt-get install slibsqlite3-dev"
+      apt: pkg=libsqlite3-dev update_cache=yes cache_valid_time=3600
+      sudo: yes
+
     - name: "apt-get install language-pack-en-base"
       apt: pkg=language-pack-en-base
       sudo: yes
@@ -43,4 +47,10 @@
 
     - name: "go get github.com/robfig/revel/revel"
       shell: export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode && go get github.com/robfig/revel/revel creates=/home/vagrant/gocode/bin/revel
+
+    - name: "go get github.com/mattn/go-sqlite3"
+      shell: export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode && go get github.com/mattn/go-sqlite3 creates=/home/vagrant/gocode/src/github/mattn/go-sqlite3
+
+    - name: "git clone https://github.com/jhotta/revelFramework4Go.git"
+      git: repo=https://github.com/jhotta/revelFramework4Go.git dest=/home/vagrant/gocode/src/revelFramework4Go
 

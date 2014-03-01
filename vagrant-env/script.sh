@@ -7,7 +7,7 @@ echo "192.30.252.131 github.com" >> /etc/hosts
 echo "74.125.235.129 code.google.com" >> /etc/hosts
 
 sudo apt-get update
-sudo apt-get -y install git mercurial sqlite golang language-pack-en-base language-pack-ja-base
+sudo apt-get -y install git mercurial sqlite libsqlite3-dev golang language-pack-en-base language-pack-ja-base
 # sudo dpkg-reconfigure locales
 
 echo "export GOPATH=/home/vagrant/gocode" >> .bashrc
