@@ -1,5 +1,9 @@
 #! /bin/sh
 
+#if []; then
+	vagrant destroy -f default
+#fi
+
 if [ `uname` = "Linux" ]; then
 
 	if [ -e ~/.ssh/known_hosts ]; then
