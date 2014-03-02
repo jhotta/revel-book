@@ -3,8 +3,7 @@
 if [ `uname` = "Linux" ]; then
 
 	if [ -e ~/.ssh/known_hosts ]; then
-		rm ~/.ssh/known_hosts
-		touch ~/.ssh/known_hosts
+		ssh-keygen -R [127.0.0.1]:2222
 	fi
 
 elif [ `uname` = "Darwin" ]; then
@@ -16,4 +15,4 @@ elif [ `uname` = "Darwin" ]; then
 
 fi
 
-vagrant up
+vagrant up --provision
