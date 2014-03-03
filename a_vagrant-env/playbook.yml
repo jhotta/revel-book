@@ -52,9 +52,6 @@
     - name: "go get github.com/robfig/revel/revel"
       shell: export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode && go get github.com/robfig/revel/revel creates=/home/vagrant/gocode/bin/revel
 
-    - name: "go get github.com/mattn/go-sqlite3"
-      shell: export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode && go get github.com/mattn/go-sqlite3 creates=/home/vagrant/gocode/src/github.com/mattn/go-sqlite3
-
     - name: "go get github.com/coopernurse/gorp"
       shell: export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode && go get github.com/coopernurse/gorp creates=/home/vagrant/gocode/src/github.com/coopernurse/gorp
 

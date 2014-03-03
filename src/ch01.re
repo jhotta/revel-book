@@ -307,6 +307,10 @@ ansible 1.4.5
 
 
 
+
+
+
+
 ==== OSの設定変更
 
 あsdふぁsdふぁsdふぁsdf
@@ -331,3 +335,35 @@ $ vi ~/ssh/know_hosts
 fileの中身の表示の中から、"[127.0.0.1]:2222"と記されているブロック(数行)を削除する。
 
 
+
+=== Revel web frameworkを起動
+
+====[column]
+
+初回の起動時のみ下記のようなERRORメッセージが表示されます。
+
+//cmd{
+ERROR 2014/03/03 07:32:04 build.go:84: src/revelFramework4Go/sampleBlogSite/app/controllers/gorp.go:4:2: cannot find package "code.google.com/p/go.crypto/bcrypt" in any of:
+  /usr/lib/go/src/pkg/code.google.com/p/go.crypto/bcrypt (from $GOROOT)
+  /home/vagrant/gocode/src/code.google.com/p/go.crypto/bcrypt (from $GOPATH)
+//}
+
+これは、gocode/pkgディレクトリ以下に暗号化様のバイナリが存在していないために、表示されています。
+
+//cmd{
+.
+└── linux_amd64
+    ├── code.google.com
+    │   └── p
+    │       └── go.net
+//}
+
+初回のrevelの実行後に先のディレクトリを確認すると、"go.crypto"が生成され、次回以降はERRORメッセージが表示されること無くRevel web frameworkを起動することが出来るようになります。
+
+//cmd{
+└── linux_amd64
+    ├── code.google.com
+    │   └── p
+    │       ├── go.crypto
+    │       └── go.net
+//}
