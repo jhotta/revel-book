@@ -5,61 +5,91 @@
   tasks:
 
     - name: "update hosts"
-      copy: src=files/hosts dest=/etc/hosts owner=root group=root mode=644 backup=yes
+      copy: src=files/hosts 
+            dest=/etc/hosts
+            owner=root
+            group=root
+            mode=644
+            backup=yes
       sudo: yes
 
     - name: "apt-get install golang"
-      apt: pkg=golang update_cache=yes cache_valid_time=3600
+      apt:  pkg=golang
+            update_cache=yes
+            cache_valid_time=3600
       sudo: yes
 
     - name: "apt-get install git"
-      apt: pkg=git update_cache=yes cache_valid_time=3600
+      apt:  pkg=git
+            update_cache=yes
+            cache_valid_time=3600
       sudo: yes
 
     - name: "apt-get install mercurial"
-      apt: pkg=mercurial update_cache=yes cache_valid_time=3600
+      apt:  pkg=mercurial
+            update_cache=yes
+            cache_valid_time=3600
       sudo: yes
 
     - name: "apt-get install sqlite"
-      apt: pkg=sqlite update_cache=yes cache_valid_time=3600
+      apt:  pkg=sqlite
+            update_cache=yes
+            cache_valid_time=3600
       sudo: yes
 
     - name: "apt-get install slibsqlite3-dev"
-      apt: pkg=libsqlite3-dev update_cache=yes cache_valid_time=3600
+      apt:  pkg=libsqlite3-dev
+            update_cache=yes
+            cache_valid_time=3600
       sudo: yes
 
     - name: "apt-get install language-pack-en-base"
-      apt: pkg=language-pack-en-base
+      apt:  pkg=language-pack-en-base
       sudo: yes
 
     - name: "apt-get install language-pack-ja-base"
-      apt: pkg=language-pack-ja-base update_cache=yes cache_valid_time=3600
+      apt:  pkg=language-pack-ja-base
+            update_cache=yes
+            cache_valid_time=3600
       sudo: yes
 
     - name: "apt-get install tree"
-      apt: pkg=tree update_cache=yes cache_valid_time=3600
+      apt:  pkg=tree
+            update_cache=yes
+            cache_valid_time=3600
       sudo: yes
 
     - name: "update bashrc"
-      copy: src=files/.bashrc dest=/home/vagrant/.bashrc owner=vagrant group=vagrant mode=644 backup=yes
+      copy: src=files/.bashrc
+            dest=/home/vagrant/.bashrc
+            owner=vagrant
+            group=vagrant
+            mode=644
+            backup=yes
 
     - name: "mkdir gocode"
       command: mkdir /home/vagrant/gocode creates=/home/vagrant/gocode
 
     - name: "go get github.com/robfig/revel"
-      shell: export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode && go get github.com/robfig/revel creates=/home/vagrant/gocode/src/github.com/robfig/revel
+      shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode
+              && go get github.com/robfig/revel
+              creates=/home/vagrant/gocode/src/github.com/robfig/revel
 
     - name: "go get github.com/robfig/revel/revel"
-      shell: export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode && go get github.com/robfig/revel/revel creates=/home/vagrant/gocode/bin/revel
+      shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode
+              && go get github.com/robfig/revel/revel
+              creates=/home/vagrant/gocode/bin/revel
 
     - name: "go get github.com/coopernurse/gorp"
-      shell: export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode && go get github.com/coopernurse/gorp creates=/home/vagrant/gocode/src/github.com/coopernurse/gorp
+      shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode
+              && go get github.com/coopernurse/gorp
+              creates=/home/vagrant/gocode/src/github.com/coopernurse/gorp
 
     - name: "go get github.com/mattn/go-sqlite3"
-      shell: export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode && go get github.com/mattn/go-sqlite3 creates=/home/vagrant/gocode/src/github.com/mattn/go-sqlite3
+      shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode
+              && go get github.com/mattn/go-sqlite3
+              creates=/home/vagrant/gocode/src/github.com/mattn/go-sqlite3
 
     - name: "git clone https://github.com/jhotta/revelFramework4Go.git"
-      git: repo=https://github.com/jhotta/revelFramework4Go.git dest=/home/vagrant/gocode/src/revelFramework4Go
-
-    # - name: "revel run revelFramework4Go/sampleBlogSite"
-    #   command: revel run revelFramework4Go/sampleBlogSite dest=/home/vagrant/gocode/src/revelFramework4Go
+      git:  repo=https://github.com/jhotta/revelFramework4Go.git
+            dest=/home/vagrant/gocode/src/revelFramework4Go
