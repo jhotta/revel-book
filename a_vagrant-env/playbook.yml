@@ -90,6 +90,15 @@
               && go get github.com/mattn/go-sqlite3
               creates=/home/vagrant/gocode/src/github.com/mattn/go-sqlite3
 
-    - name: "git clone https://github.com/jhotta/revelFramework4Go.git"
-      git:  repo=https://github.com/jhotta/revelFramework4Go.git
-            dest=/home/vagrant/gocode/src/revelFramework4Go
+    # - name:  "revel new myapp"
+    #   shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode
+    #           && revel run myapp
+    #           creates=/home/vagrant/gocode/src/myapp
+
+    # - name: "git clone https://github.com/[****]/myapp.git"
+    #   git:  repo=https://github.com/[****]/myapp.git
+    #         dest=/home/vagrant/gocode/src/myapp
+
+    # - name: "git clone https://github.com/jhotta/revelFramework4Go.git"
+    #   git:  repo=https://github.com/jhotta/revelFramework4Go.git
+    #         dest=/home/vagrant/gocode/src/revelFramework4Go
