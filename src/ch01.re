@@ -304,39 +304,341 @@ ansible 1.4.5
 
 === Vagrantfileの準備
 
+VirtualBoxの動作の設定、仮想OSの設定変更、アプリの自動でインストールのために、Vagrantを実行するディレクトリを初期化した際に出来上がったVagrantfileを編集していきます。
 
+完成後のVagrantfileは、次のようになります。
 
+//listnum[Vagrantfile_fnl][Vagrantfile final]{
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
 
+VAGRANTFILE_API_VERSION = "2"
 
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
+  config.vm.box = "ubuntu"
+  config.vm.network :forwarded_port, guest: 9000, host: 9000
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "playbook.yml"
+  end
+
+end
+//}
+
+==== VitrualBoxの動作設定
+
+自動で出来上がったVagrantfileのコメント部分を削除すると次のようになるはずです。
+
+//listnum[Vagrantfile_org][Vagrantfile Org.]{ 
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "ubuntu"
+end
+//}
+
+最初は、Vagrantfileが利用するAPIのバージョンの指定をしています。
+//emlist{ 
+VAGRANTFILE_API_VERSION = "2"
+//}
+
+次のdo ~ endの間にVirtualBoxが起動してくる際に実施する設定を記述していきます。
+//emlist{ 
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+end
+//}
+
+現在のところ、Box addした際のubuntuのマシンイメージのみが指定されています。
+
+//emlist{ 
+config.vm.box = "ubuntu"
+//}
+
+初期に自動で生成されているVagrantfileの内容が把握出来たところで、VirtualBox内に起動されてたrevel web frameworkがブラウザーのリクエストに反応するために待ち受けているPort番号を、VirtualBoxのPort番号と関連付けをすることにします。
+
+//emlist{
+config.vm.network :forwarded_port, guest: 9000, host: 9000
+//}
 
 
 ==== OSの設定変更
 
-あsdふぁsdふぁsdふぁsdf
+ポート番号の関連付けが済んだ後の設定作業は、ansibileを使って進めることにします。
+
+//emlist{
+config.vm.provision "ansible" do |ansible|
+  ansible.playbook = "playbook.yml"
+end
+//}
+
+provisionツールのansibleを利用することを宣言し、ansibleによって仮想OSを設定する内容がplaybook.ymlに記述されていることを宣言しています。
+
+
+=== playbook.yamlの準備
+
+Vagrantfileに設定内容の詳細を記述するファイルとして宣言しておいたplaybook.yamlの準備することにします。
+
+完成後のplaybook.yamlは、次の様な内容になります。ansibleが、このファイルの内容を上から順番に処理し、仮想OS環境に設定変更実施しアプリケーションをインストールします。
+
+//listnum[playbook][playbook.yaml]{
+---
+- hosts: all
+
+  user: vagrant
+  tasks:
+
+    - name: "update hosts"
+      copy: src=files/hosts
+            dest=/etc/hosts
+            owner=root
+            group=root
+            mode=644
+            backup=yes
+      sudo: yes
+
+    - name: "apt-get install golang"
+      apt:  pkg=golang
+            update_cache=yes
+            cache_valid_time=3600
+      sudo: yes
+
+    - name: "apt-get install git"
+      apt:  pkg=git
+            update_cache=yes
+            cache_valid_time=3600
+      sudo: yes
+
+    - name: "apt-get install mercurial"
+      apt:  pkg=mercurial
+            update_cache=yes
+            cache_valid_time=3600
+      sudo: yes
+
+    - name: "apt-get install sqlite"
+      apt:  pkg=sqlite
+            update_cache=yes
+            cache_valid_time=3600
+      sudo: yes
+
+    - name: "apt-get install slibsqlite3-dev"
+      apt:  pkg=libsqlite3-dev
+            update_cache=yes
+            cache_valid_time=3600
+      sudo: yes
+
+    - name: "apt-get install language-pack-en-base"
+      apt:  pkg=language-pack-en-base
+      sudo: yes
+
+    - name: "apt-get install language-pack-ja-base"
+      apt:  pkg=language-pack-ja-base
+            update_cache=yes
+            cache_valid_time=3600
+      sudo: yes
+
+    - name: "apt-get install tree"
+      apt:  pkg=tree
+            update_cache=yes
+            cache_valid_time=3600
+      sudo: yes
+
+    - name: "update bashrc"
+      copy: src=files/.bashrc
+            dest=/home/vagrant/.bashrc
+            owner=vagrant
+            group=vagrant
+            mode=644
+            backup=yes
+
+    - name: "mkdir gocode"
+      command:  mkdir /home/vagrant/gocode
+                creates=/home/vagrant/gocode
+
+    - name: "go get github.com/robfig/revel"
+      shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode 
+              && go get github.com/robfig/revel
+              creates=/home/vagrant/gocode/src/github.com/robfig/revel
+
+    - name: "go get github.com/robfig/revel/revel"
+      shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode
+              && go get github.com/robfig/revel/revel
+              creates=/home/vagrant/gocode/bin/revel
+
+    - name: "go get github.com/coopernurse/gorp"
+      shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode
+              && go get github.com/coopernurse/gorp
+              creates=/home/vagrant/gocode/src/github.com/coopernurse/gorp
+
+    - name: "go get github.com/mattn/go-sqlite3"
+      shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode
+              && go get github.com/mattn/go-sqlite3
+              creates=/home/vagrant/gocode/src/github.com/mattn/go-sqlite3
+
+    - name:  "revel new myapp"
+      shell:  export GOPATH=/home/vagrant/gocode && && cd /home/vagrant/gocode
+              && revel  run myapp
+              creates=/home/vagrant/gocode/src/myapp
+//}
+
+ansbileでは、各設定項目をタスクと呼びます。
+タスクは、次のような書式になります。
+
+//emlist{
+- name: [タスクの名前]
+  [使用するモジュール]: [モジュールで規定された書式]
+  [オプション]: [オプションで指定されて書式]
+//}
+
+タスクの名前は、自由に付けても大丈夫です。使用するモジュールやオプションの詳細は、ansibleドキュメントサイト URL:@<href>{http://docs.ansible.com/}を参考にしてください。  
+
+
+==== hostsの設定
+
+この本を執筆している期間中何度か、ubuntuのpackageをアップデートするためのリポジトリーサーバのIPアドレスの解決がDNS経由ではできなくなるケースがありました。期間中DNSでは安定しなかったため、ubuntuのリポジトリーサーバーのIPアドレス情報を/etc/hostsに静的に追記し、その情報を基にapt-getのコマンドがリポジトリーサーバの名前解決をするようにしました。
+
+仮想OS環境の/etc/hostsを上書きするためのファイルを転送するためにansibleのcopyモジュール使用します。
+
+//emlist{
+- name: "update hosts"
+  copy: src=files/hosts
+        dest=/etc/hosts
+        owner=root
+        group=root
+        mode=644
+        backup=yes
+  sudo: yes
+//}
+
+root権限でしか、/etc/hostsは上書きできないで、sudoの権限オプションも設定してます。
+
 
 ==== Go言語のインストール
 
-VirtualBox上に駆動しているubuntuの仮想マシンへsshを使ってアクセスします。
+Go言語のインストールは、ubuntu標準のパッケージを使用することにします。 
+従って、ansbileのaptモジュールを使ってインストールすることにします。  
+
+//emlist{
+    - name: "apt-get install golang"
+      apt:  pkg=golang
+            update_cache=yes
+            cache_valid_time=3600
+      sudo: yes
+//}
+
+update_cache, cache_valid_timeはオプションの設定でパッケージのupdateの頻度をコントロールしています。
+
+
+==== DBその他のdebパッケージのインストール
+
+apt-getでGo言語のパッケージをインストールした後は、Revel web frameworkを利用するのに必要になるソフトウェアのパッケージをインストールしています。
+
+各タスクのnameの部分に設定した内容の作業を、それぞれ実行しています。
+
+ * apt-get install git
+ * apt-get install mercurial
+ * apt-get install sqlite
+ * apt-get install slibsqlite3-dev
+ * apt-get install language-pack-en-base(localeによるエラーの対策)
+ * apt-get install language-pack-ja-base(localeによるエラーの対策)
+ * apt-get install tree (ディレクトリのtree表示させるため)
+
 
 ==== Revel web frameworkインストール
 
-「=」「==」「===」の後に一文字空白をあけると見出しになります。
+Revel web frameworkのインストールは、ドキュメントサイトの
+@<href>{http://robfig.github.io/revel/tutorial/gettingstarted.html, Getting Startedページ}を参考に進めていくことにします。
 
+まずは、"vagrant ssh"で仮想OSにアクセスした時のShellにGO言語環境へpathが設定されているように~/.bashrcを上書記しておきます。
 
-====[column] 
+~/vagrant-env/files/ディレクトリを新たに作成し、仮想OS環境へ転送するための.bashrcを設置しておきます。変更箇所は、ubuntuの一般的な.bashrcに下記の3行を追記したもになります。
+実際に変更した.bashrcのサンプルは付録Aに掲載してあります。
 
-vargrant provisionの際にsshアクセスができなくなる対策:
-
-//cmd{
-$ vi ~/ssh/know_hosts 
+//emlist{
+# golang env
+export GOPATH=/home/vagrant/gocode
+export PATH=$PATH:/home/vagrant/gocode/bin
 //}
 
-fileの中身の表示の中から、"[127.0.0.1]:2222"と記されているブロック(数行)を削除する。
+.bashrcも、hostsと同様にcopyモジュールを使って転送することにします。
+
+//emlist{
+- name: "update bashrc"
+  copy: src=files/.bashrc
+        dest=/home/vagrant/.bashrc
+        owner=vagrant
+        group=vagrant
+        mode=644
+        backup=yes
+//}
+
+次に、
+
+//emlist{
+- name: "mkdir gocode"
+  command:  mkdir /home/vagrant/gocode
+            creates=/home/vagrant/gocode
+//}
+
+
+//emlist{
+- name: "go get github.com/robfig/revel"
+  shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode 
+          && go get github.com/robfig/revel
+          creates=/home/vagrant/gocode/src/github.com/robfig/revel
+//}
+
+//emlist{
+- name: "go get github.com/robfig/revel/revel"
+  shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode
+          && go get github.com/robfig/revel/revel
+          creates=/home/vagrant/gocode/bin/revel
+//}
+
+
+==== DB(Sqlite)を使用するためのGO言語関連パッケージのインストール
+
+//emlist{
+- name: "go get github.com/robfig/revel/revel"
+  shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode
+          && go get github.com/robfig/revel/revel
+          creates=/home/vagrant/gocode/bin/revel
+//}
+
+//emlist{
+- name: "go get github.com/robfig/revel/revel"
+  shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode
+          && go get github.com/robfig/revel/revel
+          creates=/home/vagrant/gocode/bin/revel
+//}
+
+
+==== アプリケーションのひな形の作成
+
+//emlist{
+- name: "go get github.com/robfig/revel/revel"
+  shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode
+          && go get github.com/robfig/revel/revel
+          creates=/home/vagrant/gocode/bin/revel
+//}  
 
 
 
 === Revel web frameworkを起動
+
+//cmd{
+$ vagrant ssh  
+//}
+
+
+//cmd{
+$ cd ~/gocode && revel run myapp
+//}
+
 
 ====[column]
 
@@ -367,3 +669,9 @@ ERROR 2014/03/03 07:32:04 build.go:84: src/revelFramework4Go/sampleBlogSite/app/
     │       ├── go.crypto
     │       └── go.net
 //}
+
+
+== Githubでソースコードを管理するための準備  
+
+
+

@@ -24,7 +24,7 @@ server 64bit
 Ubuntuは、Debian GNU/LinuxをベースとしたLinuxディストリビューションの1つです。Ubuntuは、「誰にでも使いやすい最新かつ安定したOS」を目標にカノニカル社から支援を受けて開発されています。毎年4月, 10月に更新版がリリースされ、LTS(長期メンテナンス)バージョンは2年に一度リリースされ、12.04が直近バージョンになります。
 
 
-=== 仮想OSの内容を設定するためのソフト
+=== 仮想OS環境とProvision(自動設定)ソフトの間を取り持つソフト
 
 ===== Vagarant:
 @<href>{http://www.vagrantup.com/}
@@ -32,3 +32,11 @@ Ubuntuは、Debian GNU/LinuxをベースとしたLinuxディストリビュー�
 Vagrantは、仮想OS環境を設定したり、設定後の仮想マシンのイメージを作成指定くれるオープンソースのソフトウェアです。VirtualBoxやVMwareなどの仮想OS環境とPuppet, Chef, Ansibleなどの構成管理ツールの間を取り持って、再現性の高い管理環境を提供してくれます。
 
 又、仮想OSの起動,設定,SSH通信,マシンイメージ作成などをコマンドラインから操作することができ、開発者の操作性に高い操作性を提供しています。
+
+
+=== 仮想OSをProvision(自動設定)するソフト
+
+===== Ansible:
+@<href>{https://github.com/ansible/ansible/}
+
+Puppet, Chefと同等なProvisionソフト。Puppet, Chefと異なり、クライアントソフトをインストールすること無く、設定対象環境のProvision作業を進めることができる。設定内容は、yaml形式で記述されている。
