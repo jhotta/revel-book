@@ -1,7 +1,7 @@
-= BrawserにRevelサイトの画面を表示するまで
+= Revelで開発するための環境の準備
 
 //lead{
-Go言語を使ってRevel web frameworkが、起動できる環境を構築していきます。
+Go言語を使ってRevelが、起動できる環境を構築していきます。
 //}
 
 
@@ -212,7 +212,17 @@ vagrant@vagrant-ubuntu-saucy-64:~$
 //}
 
 ここまでで、Vagarantによってコントロールできる仮想環境ができました。
+それでは、仮想OS環境のシェルから、本体のシェルも戻ります。
 
+//cmd{
+$ exit
+//}
+
+本体のシェルに戻ったところで、仮想OSの環境を停止します。
+
+//cmd{
+$ vagrant halt
+//}
 
 ====[column] 
 
@@ -308,7 +318,7 @@ VirtualBoxの動作の設定、仮想OSの設定変更、アプリの自動で�
 
 完成後のVagrantfileは、次のようになります。
 
-//listnum[Vagrantfile_fnl][Vagrantfile final]{
+//listnum[Vagrantfile_fnl][完成した Vagrantfile]{
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -330,7 +340,7 @@ end
 
 自動で出来上がったVagrantfileのコメント部分を削除すると次のようになるはずです。
 
-//listnum[Vagrantfile_org][Vagrantfile Org.]{ 
+//listnum[Vagrantfile_org][オリジナル Vagrantfile]{ 
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -341,25 +351,31 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 end
 //}
 
-最初は、Vagrantfileが利用するAPIのバージョンの指定をしています。
+次の行は、Vagrantfileが利用するAPIのバージョンの指定をしています。
 //emlist{ 
 VAGRANTFILE_API_VERSION = "2"
 //}
 
-次のdo ~ endの間にVirtualBoxが起動してくる際に実施する設定を記述していきます。
+ここで示したdo ~ endの間にVirtualBoxが起動してくる際にオプションとして指定する項目を記述していきます。
 //emlist{ 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 end
 //}
 
-現在のところ、Box addした際のubuntuのマシンイメージのみが指定されています。
+"vagarant init"で生成した素のVagrantfileでは、生成時に指定した"ubuntu"のマシンイメージのみが指定されています。
 
 //emlist{ 
 config.vm.box = "ubuntu"
 //}
 
-初期に自動で生成されているVagrantfileの内容が把握出来たところで、VirtualBox内に起動されてたrevel web frameworkがブラウザーのリクエストに反応するために待ち受けているPort番号を、VirtualBoxのPort番号と関連付けをすることにします。
+
+オリジナルのVagrantfileの内容が把握出来たところで、追加の設定を記述していくことにします。
+
+
+==== 待ち受けPortのforwading設定
+
+仮想OS上に起動されてたRevelがブラウザーのリクエストに反応するために待ち受けているPort番号を、VirtualBoxのPort番号と関連付けをすることにします。
 
 //emlist{
 config.vm.network :forwarded_port, guest: 9000, host: 9000
@@ -514,7 +530,7 @@ ansbileでは、各設定項目をタスクと呼びます。
   sudo: yes
 //}
 
-root権限でしか、/etc/hostsは上書きできないで、sudoの権限オプションも設定してます。
+/etc/hostsは上書きは、root権限が必要なのでsudoの権限オプションも設定してます。
 
 
 ==== Go言語のインストール
@@ -535,7 +551,7 @@ update_cache, cache_valid_timeはオプションの設定でパッケージのup
 
 ==== DBその他のdebパッケージのインストール
 
-apt-getでGo言語のパッケージをインストールした後は、Revel web frameworkを利用するのに必要になるソフトウェアのパッケージをインストールしています。
+apt-getでGo言語のパッケージをインストールした後は、Revelを利用するのに必要になるソフトウェアのパッケージをインストールしています。
 
 各タスクのnameの部分に設定した内容の作業を、それぞれ実行しています。
 
@@ -548,23 +564,14 @@ apt-getでGo言語のパッケージをインストールした後は、Revel we
  * apt-get install tree (ディレクトリのtree表示させるため)
 
 
-==== Revel web frameworkインストール
+==== Revelインストール
 
-Revel web frameworkのインストールは、ドキュメントサイトの
+Revelのインストールは、ドキュメントサイトの
 @<href>{http://robfig.github.io/revel/tutorial/gettingstarted.html, Getting Startedページ}を参考に進めていくことにします。
 
-まずは、"vagrant ssh"で仮想OSにアクセスした時のShellにGO言語環境へpathが設定されているように~/.bashrcを上書記しておきます。
-
-~/vagrant-env/files/ディレクトリを新たに作成し、仮想OS環境へ転送するための.bashrcを設置しておきます。変更箇所は、ubuntuの一般的な.bashrcに下記の3行を追記したもになります。
-実際に変更した.bashrcのサンプルは付録Aに掲載してあります。
-
-//emlist{
-# golang env
-export GOPATH=/home/vagrant/gocode
-export PATH=$PATH:/home/vagrant/gocode/bin
-//}
-
+次は、仮想OSにsshでアクセスした際にの起動ShellにGO言語の環境PATHが設定されいるように~/.bashrcを上書記します。
 .bashrcも、hostsと同様にcopyモジュールを使って転送することにします。
+~/vagrant-env/files/ディレクトリに仮想OS環境へ転送するための.bashrcを設置しておきます。
 
 //emlist{
 - name: "update bashrc"
@@ -576,7 +583,20 @@ export PATH=$PATH:/home/vagrant/gocode/bin
         backup=yes
 //}
 
-次に、
+転送元の.bashrcは、ubuntuの一般的な.bashrcに下記の3行を追記したもになります。
+実際に変更した.bashrcのサンプルは付録Aに掲載してあります。
+
+GOPATHは、GO言語の環境PATHで自由に決めることが出来ます。ここで決めたPATHに合わせてGO言語用のディレクトリを作ることに成ります。又、$GOPATH/binには、GO言語のビルド後の
+バイナリーファイルが保存されます。従って、Shellの実行PATHに、このbinディレクトリーも追加しておきます。
+
+//emlist{
+# golang env
+export GOPATH=/home/vagrant/gocode
+export PATH=$PATH:/home/vagrant/gocode/bin
+//}
+
+先に指定したGOPATHに基づいてディレクトリを作ります。
+既に該当のある場合は再度ディレクトリを作らないように、createsオプションを指定しておきます。
 
 //emlist{
 - name: "mkdir gocode"
@@ -584,6 +604,9 @@ export PATH=$PATH:/home/vagrant/gocode/bin
             creates=/home/vagrant/gocode
 //}
 
+次のブロックは、"go get github.com/robfig/revel"のシェルコマンドを実行しています。
+このシェルコマンドは、githubよりrevelのソースを取得し、$GOPATH/src以下に保存してくれます。
+既に該当のある場合は再度ディレクトリを作らないように、createsオプションを指定しておきます。
 
 //emlist{
 - name: "go get github.com/robfig/revel"
@@ -592,84 +615,198 @@ export PATH=$PATH:/home/vagrant/gocode/bin
           creates=/home/vagrant/gocode/src/github.com/robfig/revel
 //}
 
+次のブロックは、"go get github.com/robfig/revel/revel"のシェルコマンドを実行しています。
+このシェルコマンドは、$GOPATH/bin以下に、revelのバイナリを生成してくれます。
+既に該当のある場合は再度ディレクトリを作らないように、createsオプションを指定しておきます。
+
 //emlist{
 - name: "go get github.com/robfig/revel/revel"
   shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode
           && go get github.com/robfig/revel/revel
           creates=/home/vagrant/gocode/bin/revel
 //}
+
+BDを使用しない場合は、ここまでRevelの終了。
 
 
 ==== DB(Sqlite)を使用するためのGO言語関連パッケージのインストール
 
-//emlist{
-- name: "go get github.com/robfig/revel/revel"
-  shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode
-          && go get github.com/robfig/revel/revel
-          creates=/home/vagrant/gocode/bin/revel
-//}
+今回は、DBも使用したいので引き続きDB関連パッケージをインストールすることにします。
+
+次のブロックは、"go get github.com/coopernurse/gorp"のシェルコマンドを実行しています。
+このシェルコマンドは、GO言語からDBを操作するためのORMのようなgorpモジュールをgithubより取得し、$GOPATH/src以下に保存してくれます。
+既に該当のある場合は再度ディレクトリを作らないように、createsオプションを指定しておきます。
 
 //emlist{
-- name: "go get github.com/robfig/revel/revel"
+- name: "go get github.com/coopernurse/gorp"
   shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode
-          && go get github.com/robfig/revel/revel
-          creates=/home/vagrant/gocode/bin/revel
+          && go get github.com/coopernurse/gorp
+          creates=/home/vagrant/gocode/src/github.com/coopernurse/gorp
 //}
 
-
-==== アプリケーションのひな形の作成
+次のブロックは、"go get github.com/mattn/go-sqlite3"のシェルコマンドを実行しています。
+このシェルコマンドは、GO言語からsqliteを使用するためのドライバーモジュールをgithubより取得し、$GOPATH/src以下に保存してくれます。
+既に該当のある場合は再度ディレクトリを作らないように、createsオプションを指定しておきます。
 
 //emlist{
-- name: "go get github.com/robfig/revel/revel"
+- name: "go get github.com/mattn/go-sqlite3"
   shell:  export GOPATH=/home/vagrant/gocode && cd /home/vagrant/gocode
-          && go get github.com/robfig/revel/revel
-          creates=/home/vagrant/gocode/bin/revel
-//}  
-
-
-
-=== Revel web frameworkを起動
-
-//cmd{
-$ vagrant ssh  
+          && go get github.com/mattn/go-sqlite3
+          creates=/home/vagrant/gocode/src/github.com/mattn/go-sqlite3
 //}
 
+これで、DBも扱える環境も含めてインストールするための、Vagrantfileが完成しました。 
+
+
+=== Revelを起動
+
+今回は、プロビジョンのプションを付けて仮想OSをvagrantから起動します。
 
 //cmd{
-$ cd ~/gocode && revel run myapp
+$ vagrant up --provision  
 //}
 
-
-====[column]
-
-初回の起動時のみ下記のようなERRORメッセージが表示されます。
+起動の途中に、sshで使用するRSA keyに関する問合せがありますので、"yes"と入力してください。
+プロビジョンのプロセスが終了するまでには、しばらく時間がかかります。次のような実行結果が表示されれば終了です。
 
 //cmd{
-ERROR 2014/03/03 07:32:04 build.go:84: src/revelFramework4Go/sampleBlogSite/app/controllers/gorp.go:4:2: cannot find package "code.google.com/p/go.crypto/bcrypt" in any of:
-  /usr/lib/go/src/pkg/code.google.com/p/go.crypto/bcrypt (from $GOROOT)
-  /home/vagrant/gocode/src/code.google.com/p/go.crypto/bcrypt (from $GOPATH)
+Bringing machine 'default' up with 'virtualbox' provider...
+[default] Clearing any previously set forwarded ports...
+[default] Clearing any previously set network interfaces...
+[default] Preparing network interfaces based on configuration...
+[default] Forwarding ports...
+[default] -- 22 => 2222 (adapter 1)
+[default] -- 9000 => 9000 (adapter 1)
+[default] Booting VM...
+[default] Waiting for machine to boot. This may take a few minutes...
+[default] Machine booted and ready!
+[default] Mounting shared folders...
+[default] -- /vagrant
+[default] Running provisioner: ansible...
+
+PLAY [all] ******************************************************************** 
+
+GATHERING FACTS *************************************************************** 
+The authenticity of host '[127.0.0.1]:2222 ([127.0.0.1]:2222)' can't be established.
+RSA key fingerprint is e7:a6:12:c6:ef:17:90:c9:69:46:c0:4a:83:b8:fb:0c.
+Are you sure you want to continue connecting (yes/no)? yes
+ok: [default]
+
+TASK: [update hosts] ********************************************************** 
+changed: [default]
+
+TASK: [apt-get install golang] ************************************************ 
+changed: [default]
+
+TASK: [apt-get install git] *************************************************** 
+changed: [default]
+
+TASK: [apt-get install mercurial] ********************************************* 
+changed: [default]
+
+TASK: [apt-get install sqlite] ************************************************ 
+changed: [default]
+
+TASK: [apt-get install slibsqlite3-dev] *************************************** 
+changed: [default]
+
+TASK: [apt-get install language-pack-en-base] ********************************* 
+changed: [default]
+
+TASK: [apt-get install language-pack-ja-base] ********************************* 
+changed: [default]
+
+TASK: [apt-get install tree] ************************************************** 
+changed: [default]
+
+TASK: [update bashrc] ********************************************************* 
+changed: [default]
+
+TASK: [mkdir gocode] ********************************************************** 
+changed: [default]
+
+TASK: [go get github.com/robfig/revel] **************************************** 
+changed: [default]
+
+TASK: [go get github.com/robfig/revel/revel] ********************************** 
+changed: [default]
+
+TASK: [go get github.com/coopernurse/gorp] ************************************ 
+changed: [default]
+
+TASK: [go get github.com/mattn/go-sqlite3] ************************************ 
+changed: [default]
+
+PLAY RECAP ******************************************************************** 
+default                    : ok=16   changed=15   unreachable=0    failed=0 
 //}
 
-これは、gocode/pkgディレクトリ以下に暗号化様のバイナリが存在していないために、表示されています。
+プロンプトが戻ってきたら、本体OSから仮想OSにsshで接続します。
+
+//cmd{
+$ vagrant ssh
+$ ls
+//}
+
+先ほど確認したubuntuのログイン画面が表示され、lsマンドを実行したところでgocodeのディレクトリーが表示されていることを確認します。
+
+gocodeディレクトリーに移動し、Revelを使って開発していくためのディレクトリー構成の雛形を生成することにします。
+
+//cmd{
+$ cd ~/gocode
+$ revel new myapp
+//}
+
+~/gocode/src/myappディレクトリ以下に次のような雛形が生成されました。
 
 //cmd{
 .
-└── linux_amd64
-    ├── code.google.com
-    │   └── p
-    │       └── go.net
+├── app
+│   ├── controllers
+│   │   └── app.go
+│   ├── init.go
+│   └── views
+│       ├── App
+│       │   └── Index.html
+│       ├── debug.html
+│       ├── errors
+│       │   ├── 404.html
+│       │   └── 500.html
+│       ├── flash.html
+│       ├── footer.html
+│       └── header.html
+├── conf
+│   ├── app.conf
+│   └── routes
+├── messages
+│   └── sample.en
+├── public
+│   ├── css
+│   │   └── bootstrap.css
+│   ├── img
+│   │   ├── favicon.png
+│   │   ├── glyphicons-halflings.png
+│   │   └── glyphicons-halflings-white.png
+│   └── js
+│       └── jquery-1.9.1.min.js
+└── tests
+    └── apptest.go
+
+12 directories, 18 files
 //}
 
-初回のrevelの実行後に先のディレクトリを確認すると、"go.crypto"が生成され、次回以降はERRORメッセージが表示されること無くRevel web frameworkを起動することが出来るようになります。
+myappを起動してみます。
 
 //cmd{
-└── linux_amd64
-    ├── code.google.com
-    │   └── p
-    │       ├── go.crypto
-    │       └── go.net
+$ revel run myapp
 //}
 
+本体OSでブラウザーを起動し、http://localhost:9000にアクセスします。
+次のような画面がブラウザーに表示されれば、始めてのRevelは完成です。
+
+
+//image[result_page][myapp完成ページ]{
+//}
 
 == Githubでソースコードを管理するための準備  
 
