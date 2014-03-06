@@ -1,0 +1,123 @@
+---
+- hosts: all
+  remote_user: vagrant
+
+  vars:
+    home_dir: /home/vagrant
+    go_bin: "{{ home_dir }}/gocode/bin"
+    go_src: "{{ home_dir }}/gocode/src"
+    bash_dir: /bin/bash
+    go_env: 
+        GOPATH: home/vagrant/gocode
+
+  tasks:
+    - name: "update hosts"
+      copy: src=files/hosts 
+            dest=/etc/hosts
+            owner=root
+            group=root
+            mode=644
+            backup=yes
+      sudo: yes
+
+    - name: "apt-get install golang"
+      apt:  pkg=golang
+            update_cache=yes
+            cache_valid_time=3600
+      sudo: yes
+
+    - name: "apt-get install git"
+      apt:  pkg=git
+            update_cache=yes
+            cache_valid_time=3600
+      sudo: yes
+
+    - name: "apt-get install mercurial"
+      apt:  pkg=mercurial
+            update_cache=yes
+            cache_valid_time=3600
+      sudo: yes
+
+    - name: "apt-get install sqlite"
+      apt:  pkg=sqlite
+            update_cache=yes
+            cache_valid_time=3600
+      sudo: yes
+
+    - name: "apt-get install slibsqlite3-dev"
+      apt:  pkg=libsqlite3-dev
+            update_cache=yes
+            cache_valid_time=3600
+      sudo: yes
+
+    - name: "apt-get install language-pack-en-base"
+      apt:  pkg=language-pack-en-base
+      sudo: yes
+
+    - name: "apt-get install language-pack-ja-base"
+      apt:  pkg=language-pack-ja-base
+            update_cache=yes
+            cache_valid_time=3600
+      sudo: yes
+
+    - name: "apt-get install tree"
+      apt:  pkg=tree
+            update_cache=yes
+            cache_valid_time=3600
+      sudo: yes
+
+    - name: "update bash.bashrc"
+      copy: src=files/.bashrc
+            dest={{home_dir}}/.bashrc
+            owner=vagrant
+            group=vagrant
+            mode=644
+            backup=yes
+
+    - name: "mkdir gocode"
+      command: mkdir /home/vagrant/gocode creates=/home/vagrant/gocode
+
+    - name: "go get github.com/robfig/revel"
+      shell: go get github.com/robfig/revel
+               chdir=/home/vagrant/gocode
+               executable=/bin/bash
+               creates=/home/vagrant/gocode/src/github.com/robfig/revel
+      environment: 
+                GOPATH: /home/papago/gocode
+      remote_user: vagrant
+
+    # - name: "go get github.com/robfig/revel/revel"
+    #   command: go get github.com/robfig/revel/revel
+    #            chdir=/home/vagrant/gocode
+    #            executable=/bin/bash
+    #            creates=/home/vagrant/gocode/bin/revel
+
+    # - name: "go get github.com/coopernurse/gorp"
+    #   shell: go get github.com/coopernurse/gorp
+    #            chdir=/home/vagrant/gocode
+    #            executable=/bin/bash
+    #   environment: 
+    #             GOPATH: /home/papago/gocode
+               #creates=/home/vagrant/gocode/src/github.com/coopernurse/gorp
+
+    # - name: "go get github.com/mattn/go-sqlite3"
+    #   command: go get github.com/mattn/go-sqlite3
+    #            chdir={{ go_dir }}
+    #            executable={{ bash_dir }}
+    #            creates={{ go_src }}/github.com/mattn/go-sqlite3
+
+    # - name:  "revel new myapp"
+    #   shell: revel new myapp
+    #            chdir={{ go_dir }}
+    #            executable=/bin/bash
+    #            creates={{ go_src }}/myapp
+
+    # - name: "git clone https://github.com/[****]/myapp.git"
+    #   git:  repo=https://github.com/[****]/myapp.git
+    #         dest=/home/vagrant/gocode/src/myapp
+
+    # - name: "git clone https://github.com/jhotta/revelFramework4Go.git"
+    #   git:  repo=https://github.com/jhotta/revelFramework4Go.git
+    #         dest=/home/vagrant/gocode/src/revelFramework4Go
+
+  handlers:
