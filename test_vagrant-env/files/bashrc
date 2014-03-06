@@ -1,3 +1,0 @@
-# golang env
-export GOPATH=/home/vagrant/gocode
-export PATH=$PATH:/home/vagrant/gocode/bin
