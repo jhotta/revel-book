@@ -4,20 +4,47 @@
 
   vars:
     home_dir: /home/vagrant
-    go_bin: "{{ home_dir }}/gocode/bin"
-    go_src: "{{ home_dir }}/gocode/src"
-    bash_dir: /bin/bash
+    go_dir: "{{ home_dir }}/gocode"
+    go_bin: "{{ go_dir }}/bin"
+    go_src: "{{ go_dir }}/src"
     go_env: 
-        GOPATH: home/vagrant/gocode
+        GOPATH: go_dir
 
   tasks:
-    - name: "update hosts"
-      copy: src=files/hosts 
-            dest=/etc/hosts
-            owner=root
-            group=root
-            mode=644
-            backup=yes
+    - name: "add IP address of archive.ubuntu.com" 
+      lineinfile: dest=/etc/hosts
+              regexp='archive\.ubuntu\.com'
+              line='91.189.92.200 archive.ubuntu.com'
+              owner=root
+              group=root
+              mode=0644
+      sudo: yes
+
+    - name: "add IP address of archive.ubuntu.com" 
+      lineinfile: dest=/etc/hosts
+              regexp='security\.ubuntu\.com'
+              line='91.189.92.200 security.ubuntu.com'
+              owner=root
+              group=root
+              mode=0644
+      sudo: yes
+
+    - name: "add IP address of github.com" 
+      lineinfile: dest=/etc/hosts
+              regexp='github\.com'
+              line='192.30.252.131 github.com'
+              owner=root
+              group=root
+              mode=0644
+      sudo: yes
+
+    - name: "add IP address of code.google.com" 
+      lineinfile: dest=/etc/hosts
+              regexp='code\.google\.com'
+              line='74.125.235.129 code.google.com'
+              owner=root
+              group=root
+              mode=0644
       sudo: yes
 
     - name: "apt-get install golang"
@@ -52,6 +79,8 @@
 
     - name: "apt-get install language-pack-en-base"
       apt:  pkg=language-pack-en-base
+            update_cache=yes
+            cache_valid_time=3600
       sudo: yes
 
     - name: "apt-get install language-pack-ja-base"
@@ -66,55 +95,39 @@
             cache_valid_time=3600
       sudo: yes
 
-    - name: "update bash.bashrc"
-      copy: src=files/.bashrc
-            dest={{home_dir}}/.bashrc
-            owner=vagrant
-            group=vagrant
-            mode=644
-            backup=yes
-
     - name: "mkdir gocode"
-      command: mkdir /home/vagrant/gocode creates=/home/vagrant/gocode
+      command: mkdir {{ go_dir }} creates={{ go_dir }}
 
     - name: "go get github.com/robfig/revel"
-      shell: go get github.com/robfig/revel
-               chdir=/home/vagrant/gocode
-               executable=/bin/bash
-               creates=/home/vagrant/gocode/src/github.com/robfig/revel
-      environment: 
-                GOPATH: /home/papago/gocode
-      remote_user: vagrant
+      command: go get github.com/robfig/revel
+               creates={{ go_src }}/github.com/robfig/revel
+      environment: go_env
 
-    # - name: "go get github.com/robfig/revel/revel"
-    #   command: go get github.com/robfig/revel/revel
-    #            chdir=/home/vagrant/gocode
-    #            executable=/bin/bash
-    #            creates=/home/vagrant/gocode/bin/revel
+    - name: "go get github.com/robfig/revel/revel"
+      command: go get github.com/robfig/revel/revel
+               creates={{ go_bin }}/revel
+      environment: go_env
 
-    # - name: "go get github.com/coopernurse/gorp"
-    #   shell: go get github.com/coopernurse/gorp
-    #            chdir=/home/vagrant/gocode
-    #            executable=/bin/bash
-    #   environment: 
-    #             GOPATH: /home/papago/gocode
-               #creates=/home/vagrant/gocode/src/github.com/coopernurse/gorp
+    - name: "go get github.com/coopernurse/gorp"
+      command: go get github.com/coopernurse/gorp
+             creates={{ go_src }}/github.com/coopernurse/gorp
+      environment: go_env
 
-    # - name: "go get github.com/mattn/go-sqlite3"
-    #   command: go get github.com/mattn/go-sqlite3
-    #            chdir={{ go_dir }}
-    #            executable={{ bash_dir }}
-    #            creates={{ go_src }}/github.com/mattn/go-sqlite3
+    - name: "go get github.com/mattn/go-sqlite3"
+      command: go get github.com/mattn/go-sqlite3
+               creates={{ go_src }}/github.com/mattn/go-sqlite3
+      environment: go_env
 
-    # - name:  "revel new myapp"
-    #   shell: revel new myapp
-    #            chdir={{ go_dir }}
-    #            executable=/bin/bash
-    #            creates={{ go_src }}/myapp
+    - name: "export GOPATH=/home/vagrant/gocode"
+      lineinfile: dest={{ home_dir }}/.bashrc
+                  regexp='export GOPATH=/home/vagrant/gocode'
+                  line="export GOPATH=/home/vagrant/gocode"
 
-    # - name: "git clone https://github.com/[****]/myapp.git"
-    #   git:  repo=https://github.com/[****]/myapp.git
-    #         dest=/home/vagrant/gocode/src/myapp
+    - name: "export PATH=$PATH:/home/vagrant/gocode/bin"
+      lineinfile: dest={{ home_dir }}/.bashrc
+                  regexp='export PATH=$PATH\:/home/vagrant/gocode/bin'
+                  line="export PATH=$PATH:/home/vagrant/gocode/bin"
+
 
     # - name: "git clone https://github.com/jhotta/revelFramework4Go.git"
     #   git:  repo=https://github.com/jhotta/revelFramework4Go.git
