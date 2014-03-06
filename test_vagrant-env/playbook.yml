@@ -4,17 +4,17 @@
 
   vars:
     home_dir: /home/vagrant
-    go_dir: "{{ home_dir }}/gocode"
-    go_bin: "{{ go_dir }}/bin"
-    go_src: "{{ go_dir }}/src"
+    go_dir: '{{ home_dir }}/gocode'
+    go_bin: '{{ go_dir }}/bin'
+    go_src: '{{ go_dir }}/src'
     go_env: 
-        GOPATH: go_dir
+        GOPATH: '{{ go_dir }}'
 
   tasks:
     - name: "add IP address of archive.ubuntu.com" 
       lineinfile: dest=/etc/hosts
-              regexp='archive\.ubuntu\.com'
-              line='91.189.92.200 archive.ubuntu.com'
+              regexp='archive\.ubuntu\.com$'
+              line="91.189.92.200 archive.ubuntu.com"
               owner=root
               group=root
               mode=0644
@@ -22,8 +22,8 @@
 
     - name: "add IP address of archive.ubuntu.com" 
       lineinfile: dest=/etc/hosts
-              regexp='security\.ubuntu\.com'
-              line='91.189.92.200 security.ubuntu.com'
+              regexp='security\.ubuntu\.com$'
+              line="91.189.92.200 security.ubuntu.com"
               owner=root
               group=root
               mode=0644
@@ -31,8 +31,8 @@
 
     - name: "add IP address of github.com" 
       lineinfile: dest=/etc/hosts
-              regexp='github\.com'
-              line='192.30.252.131 github.com'
+              regexp='github\.com$'
+              line="192.30.252.131 github.com"
               owner=root
               group=root
               mode=0644
@@ -40,8 +40,8 @@
 
     - name: "add IP address of code.google.com" 
       lineinfile: dest=/etc/hosts
-              regexp='code\.google\.com'
-              line='74.125.235.129 code.google.com'
+              regexp='code\.google\.com$'
+              line="74.125.235.129 code.google.com"
               owner=root
               group=root
               mode=0644
@@ -96,36 +96,37 @@
       sudo: yes
 
     - name: "mkdir gocode"
-      command: mkdir {{ go_dir }} creates={{ go_dir }}
+      command: mkdir {{ go_dir }}
+               creates={{ go_dir }}
 
     - name: "go get github.com/robfig/revel"
       command: go get github.com/robfig/revel
                creates={{ go_src }}/github.com/robfig/revel
-      environment: go_env
+      environment: '{{ go_env }}'
 
     - name: "go get github.com/robfig/revel/revel"
       command: go get github.com/robfig/revel/revel
                creates={{ go_bin }}/revel
-      environment: go_env
+      environment: '{{ go_env }}'
 
     - name: "go get github.com/coopernurse/gorp"
       command: go get github.com/coopernurse/gorp
              creates={{ go_src }}/github.com/coopernurse/gorp
-      environment: go_env
+      environment: '{{ go_env }}'
 
     - name: "go get github.com/mattn/go-sqlite3"
       command: go get github.com/mattn/go-sqlite3
                creates={{ go_src }}/github.com/mattn/go-sqlite3
-      environment: go_env
+      environment: '{{ go_env }}'
 
     - name: "export GOPATH=/home/vagrant/gocode"
       lineinfile: dest={{ home_dir }}/.bashrc
-                  regexp='export GOPATH=/home/vagrant/gocode'
+                  regexp='^export GOPATH=/home/vagrant/gocode'
                   line="export GOPATH=/home/vagrant/gocode"
 
     - name: "export PATH=$PATH:/home/vagrant/gocode/bin"
       lineinfile: dest={{ home_dir }}/.bashrc
-                  regexp='export PATH=$PATH\:/home/vagrant/gocode/bin'
+                  regexp='export PATH=.PATH:/home/vagrant/gocode/bin'
                   line="export PATH=$PATH:/home/vagrant/gocode/bin"
 
 
