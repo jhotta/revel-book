@@ -129,9 +129,8 @@
                   regexp='export PATH=.PATH:/home/vagrant/gocode/bin'
                   line="export PATH=$PATH:/home/vagrant/gocode/bin"
 
-
-    # - name: "git clone https://github.com/jhotta/revelFramework4Go.git"
-    #   git:  repo=https://github.com/jhotta/revelFramework4Go.git
-    #         dest=/home/vagrant/gocode/src/revelFramework4Go
+    - name: "git clone https://github.com/jhotta/revelFramework4Go.git"
+      git:  repo=https://github.com/jhotta/revelFramework4Go.git
+            dest={{ go_src }}/revelFramework4Go
 
   handlers:
