@@ -10,62 +10,110 @@ Go言語を使ってRevelが、起動できる環境を構築していきます�
 === VitualBoxのインストール
 
 この本では、VirtualBoxを利用してベースとなるLinuxOSを起動することにします。
-VirtualBoxは、以下の@<href>{https://www.virtualbox.org/wiki/Downloads, ページURL}からダウンロードできます。
+VirtualBoxは、次のランディングページからダウンロードしてインストールします。
 
-今作業しているPCのOSに適応したVirtualBoxのパッケージを、このサイトからダウンロードします。
+//emlist{
+https://www.virtualbox.org
+//}
+
+実際のダウンロードページのURLは、次になります。
+
+//emlist{
+https://www.virtualbox.org/wiki/Downloads
+//}
+
+OSXに適応したVirtualBoxのパッケージを、このサイトからダウンロードします。
+OSX hotsの右側にあり"x86/amd64"の文字列をダブルクリックするとダウンロードがスタートします。
 
 //image[vb_dl][VirtualBoxのダウンロードページ]{
 //}
 
 先にダウンロードしたVirtualBoxのインストールファイルをダブルクリックし、ポップアップメニューの指示に従ってVirtualBoxをインストルします。
 
-//image[vb_inst1][インストール図1]{
+//image[VB_open_package][インストール図1]{
 //}
 
 ダウンロードしたファイルをダブルクリックし、ポップアップメニューの指示に従いVirtualBoxをインストルします。
 
-//image[vb_inst2][インストール図2]{
+//image[VB_start_install][インストール図3]{
 //}
 
 ダウンロードしたファイルをダブルクリックし、ポップアップメニューの指示に従いVirtualBoxをインストルします。
 
-//image[vb_inst3][インストール図3]{
+//image[VB_target_storage][インストール図3]{
 //}
 
 ダウンロードしたファイルをダブルクリックし、ポップアップメニューの指示に従いVirtualBoxをインストルします。
+
+//image[VB_root_password][インストール図3]{
+//}
+
+//image[VB_install_success][インストール図3]{
+//}
 
 
 === Vagrantのインストール
 
 VirtualBoxは直接操作しても特に問題はなのですが、仮想OS環境を効率よく操作すると共に基本環境の構築の再現性を上げるために、今回はVagrantを使用することにします。
 
-Vagrantは、以下の@<href>{http://www.vagrantup.com/downloads.html, ページURL}からダウンロードできます。
+Vagrantは、次のランディングページからダウンロードできます。
 
-今作業しているPCのOSに適応したVirtualBoxのパッケージを、このサイトからダウンロードします。
+//emlist{
+http://www.vagrantup.com/
+//}
+
+Downloadタブをクリックして、パッケージの選択画面に移動します。
+
+//emlist{
+http://www.vagrantup.com/downloads.html
+//}
+
+OSXに適応したVirtualBoxのパッケージを、このサイトからダウンロードします。
 
 //image[vg_dl][Vagrantのダウンロードページ]{
 //}
 
 先にダウンロードしたVirtualBoxのインストールファイルをダブルクリックし、ポップアップメニューの指示に従ってVirtualBoxをインストルします。
 
-//image[vg_inst1][インストール図1]{
+//image[VG_package_download][インストール図1]{
+//}
+
+//image[VG_package_open][インストール図1]{
+//}
+
+//image[VG_install_check][インストール図1]{
+//}
+
+//image[VG_start_install][インストール図1]{
+//}
+
+//image[VG_license_agreement][インストール図1]{
+//}
+
+//image[VG_license_agree_popup][インストール図1]{
+//}
+
+//image[VG_target_storage][インストール図1]{
+//}
+
+//image[VG_root_password][インストール図1]{
+//}
+
+
+
+ダウンロードしたファイルをダブルクリックし、ポップアップメニューの指示に従いVagrantをインストルします。
+
+//image[VG_install_success][インストール図1]{
 //}
 
 ダウンロードしたファイルをダブルクリックし、ポップアップメニューの指示に従いVagrantをインストルします。
 
-//image[vg_inst2][インストール図2]{
+//image[VG_install_success][インストール図1]{
 //}
 
 ダウンロードしたファイルをダブルクリックし、ポップアップメニューの指示に従いVagrantをインストルします。
 
-//image[v_inst3][インストール図3]{
-//}
-
-ダウンロードしたファイルをダブルクリックし、ポップアップメニューの指示に従いVagrantをインストルします。
-
-インストールが完了したところで、Vagrantの操作をするするためにコンソールを起動します。OSXであれば、terminalを実行し、コマンドを入力することになります。
-
-
+インストールが完了したところで、Vagrantの操作をするするためにコンソールを起動します。Terminalを実行し、コマンドを入力することになります。
 
 //cmd{
 $ vagrant --version
@@ -82,7 +130,7 @@ Vagrant 1.4.3
 
 http://www.vagrantbox.es/
 
-//image[v_inst3][インストール図3]{
+//image[VG_machine_image][インストール図3]{
 //}
 
 今回は、"Official Ubuntu 13.10 daily Cloud Image amd64 (Development release, No Guest Additions)"と書かれている仮想マシンメージをVagrantの管理下にインポートして使うことにします。
@@ -808,7 +856,95 @@ $ revel run myapp
 //image[result_page][myapp完成ページ]{
 //}
 
-== Githubでソースコードを管理するための準備  
+== Githubでソースコードを管理するための準備
+
+仮想OS環境へのコードの転送や本体環境でのバージョン管理の利便性のために、Gitによるコード管理をすることにします。
 
 
+=== Gitのインストール
 
+次のサイトからOSX用のGitのパッケージをダウントードしてください。ダウンロードしたパッケージをダブルクリックするとインストーラー画面が表示されます。画面の指示に従ってインストールを進めます。
+
+//emlist{
+http://code.google.com/p/git-osx-installer
+//}
+
+Downloadタブをクリックすると、次の様なページが表示されますので、最新のGitインストーラを選択し、ダウンロートしてください。パッケージ毎のダウンロードヘージに移動します。
+
+//image[git_download][Gitパッケージの選択ページ]{
+//}
+
+パッケージのバージョンを確認し、名前をダブルクリックすることによってダウンロードを開始します。  
+
+//image[git_download2][Gitパッケージのダウンロード確認]{
+//}
+
+パッケージのダウンロードが完了したら、今取得したパッケージをダブルクリックしてインストールを開始します。
+
+//image[installer_start][パッケージインストーラ起動]{
+//}
+
+Gitのインストールが完了したら、 ターミナルよりGitの動作を確認します。
+
+//cmd{
+$ git --version
+//}
+
+次のように、今インストールしたGitのバージョンが表示されればインストール確認は完了です。
+
+//cmd{
+git version 1.8.3.4 (Apple Git-47)
+//}
+
+
+=== Githubへのユーザー登録
+
+本体環境と仮想OS環境でコードを共有するためにはコードをクラウドに保管しておくと便利なので、Githubにユーザー登録し、クラウド上にもコードも保存できるばしょを確保しておきます。
+
+次が、GithubのURLです。
+
+//emlist{
+http://github.com
+//}
+
+次のようなGithubのランディングページが表示されます。
+
+//image[github_page][Githubランディングページ]{
+//}
+
+右側の、入力欄に必要な情報を入力し、入力欄の右隅に緑のチェックマークが入っていることを確認したら、緑の"Sign up for Github"のボタンをクリックしてください。
+
+//image[github_register][ユーザー情報入力状態]{
+//}
+
+支払いプランを選択す画面が表示されます。"Free"(無償)のプランを選択してくしていることを確認し、緑の"Fnish sign up"ボタンをクリックします。
+
+//image[github_plan][Githubプラン選択ページ]{
+//}
+
+次のようなGithubダッシュボードが表示されれば仮登録は完了です。  
+
+//image[github_dash][Githubダッシュボード]{
+//}
+
+登録の際に入力したメールアドレスに、サービスをアクティベーションする内容のメールが届きます。そのメールに記載されているURLをクリックすると、アクティベーションが完了し、仮登録の状態から本登録の状態に移行します。
+
+
+=== 開発していくソースのレポジトリ作成
+
+//image[GIT_repo_process][myapp完成ページ]{
+//}
+
+//image[GIT_name_repo][myapp完成ページ]{
+//}
+
+//image[GIT_name_repo][myapp完成ページ]{
+//}
+
+//image[GIT_repo_success][myapp完成ページ]{
+//}
+
+=== 開発コードの最初にコミットまで
+
+//image[result_page][myapp完成ページ]{
+//}
